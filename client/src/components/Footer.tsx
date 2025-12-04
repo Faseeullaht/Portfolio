@@ -21,25 +21,17 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-sm mb-4 text-foreground">Quick Links</h4>
             <nav className="flex flex-col gap-2">
-              <Link href="/">
-                <a className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-home">
-                  Home
-                </a>
+              <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-home">
+                Home
               </Link>
-              <Link href="/about">
-                <a className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-about">
-                  About
-                </a>
+              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-about">
+                About
               </Link>
-              <Link href="/projects">
-                <a className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-projects">
-                  Projects
-                </a>
+              <Link href="/projects" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-projects">
+                Projects
               </Link>
-              <Link href="/contact">
-                <a className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-contact">
-                  Contact
-                </a>
+              <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-footer-contact">
+                Contact
               </Link>
             </nav>
           </div>
