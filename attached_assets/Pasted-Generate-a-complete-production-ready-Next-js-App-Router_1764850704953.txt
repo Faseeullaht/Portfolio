@@ -1,0 +1,147 @@
+Generate a complete, production-ready **Next.js  (App Router)** personal portfolio website project for me. Make the site visually premium and modern, inspired by the Mozilla Firefox welcome page style: https://www.mozilla.org/en-US/firefox/welcome/26/
+
+--- REQUIREMENTS SUMMARY ---
+- Next.js 14 (App Router) — JavaScript (no TypeScript)
+- TailwindCSS
+- Framer Motion for animations
+- shadcn/ui for polished UI components
+- next-themes for dark/light toggling (persistent in localStorage)
+- JSON-driven dynamic data for projects, experience, skills, etc.
+- Contact form that posts to an API route using Nodemailer (dummy Gmail credentials)
+- Resume support — I will upload `RESUME.pdf` into `public/`
+- Optionally include project screenshot, GitHub link, and live preview URL in project entries
+- Ready-to-deploy instructions for Vercel (with `.env.local.example`)
+
+--- DESIGN & UX ---
+- Premium color theme (provide an attractive default palette + accent colors)
+  Example palette: midnight navy (#0b1220) background, indigo gradient accents, cyan highlights, warm peaches for CTA.
+- Big bold typography, glassmorphism cards, soft glows, subtle parallax and reveal animations
+- Bento grid for projects, smooth scroll, and accessible layout
+- Responsive at all breakpoints
+- Accessibility: semantic HTML, keyboard-focus styles, aria labels for form
+
+--- ADDITIONAL FEATURES (must be included) ---
+1. **Better Color Theme** — implement a cohesive Tailwind config theme & CSS variables for easy edits
+2. **Dark/Light Mode Toggle** — use `next-themes`. Toggle persists to `localStorage`. Add an icon toggle in the navbar and automatic system-preference detection.
+3. **shadcn/ui Integration** — use shadcn components (Button, Card, Input, Textarea, Toast) for consistent top-tier UI. (You can scaffold minimal shadcn usage without requiring their full generator if necessary — just import and use components styled with Tailwind.)
+4. **Deployable** — include a small `DEPLOY.md` section describing how to deploy to Vercel, what env vars are needed (GMAIL_USER, GMAIL_PASS, TO_EMAIL), and how to test contact email.
+
+--- PAGES & ROUTES ---
+Create these pages in `/app`:
+- `/` (Home) — hero with name “Mohammed Faseeullah”, subtitle "Full Stack Developer (MERN • Node.js • Fastify • PostgreSQL)". CTAs: “View Resume” (open `/public/RESUME.pdf`) and “Contact Me”. Featured projects preview (from JSON).
+- `/about` — bio, skills chips, experience timeline (driven from `data/constants.js`), embedded resume viewer.
+- `/projects` — paginated/bento grid of project cards (driven by JSON constants). Each card supports optional `screenshot`, `github`, `previewUrl`. Add modal or detail page for "Learn More".
+- `/contact` — contact form with:
+  - Fields: `email` (validated) and `message` (min length)
+  - Optional `name` field
+  - Client-side validation + server-side check
+  - On submit: POST `/api/contact` with `{ email, name?, message }`
+  - Success / Error toasts and UX states
+
+Create API route:
+- `/app/api/contact/route.js` (POST)
+  - Use `nodemailer` with Gmail dummy creds fallback:
+    ```
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER || 'dummyemail@gmail.com',
+        pass: process.env.GMAIL_PASS || 'dummyapppassword',
+      }
+    })
+    ```
+  - Send email to `process.env.TO_EMAIL || 'faseeullah.1998@gmail.com'`
+  - Return JSON `{ success: true, message: "Email sent!" }` on success, and appropriate error JSON on failure.
+
+--- PROJECT STRUCTURE (exact) ---
+/app
+  layout.js
+  globals.css
+  page.js
+  about/page.js
+  projects/page.js
+  contact/page.js
+  api/contact/route.js
+
+/components
+  Navbar.jsx
+  Footer.jsx
+  Hero.jsx
+  ProjectCard.jsx
+  ProjectsPreview.jsx
+  ResumeEmbed.jsx
+  ThemeToggle.jsx
+
+/data
+  constants.js    // export `projects`, `skills`, `experience`, `theme` constants
+
+/public
+  RESUME.pdf      // I'll upload this manually
+
+.env.local.example
+README.md
+package.json
+next.config.js
+tailwind.config.cjs
+postcss.config.cjs
+DEPLOY.md
+
+--- TECH DETAILS & IMPLEMENTATION NOTES (must be followed) ---
+- Use `next-themes` for theme switching; default theme should follow system preference.
+- Implement theme CSS variables in `globals.css` and extend Tailwind with custom colors in `tailwind.config.cjs`.
+- shadcn/ui: include imports and use at least Button, Card, Input, Textarea. If full shadcn setup is heavy, use a minimal shadcn-like component layer but use their naming & styling conventions (Button component with variants).
+- Use `framer-motion` for hero entry, project card hover, and scroll reveal.
+- Contact form should use `fetch()` to POST to `/api/contact`, show inline validation and toasts (success/error).
+- Add simple analytics placeholder (commented) for future integration.
+- Keep code modular and well commented so I can later customize content.
+
+--- JSON DATA example format (in `data/constants.js`) ---
+export const projects = [
+{
+id: 'p1',
+title: 'Project Title',
+description: 'Short summary of the project.',
+stack: ['Next.js','Tailwind','Fastify'],
+github: 'https://github.com/user/repo',
+previewUrl: 'https://app.example.com',
+screenshot: '/screenshots/p1.png' // optional; user may upload later
+},
+...
+]
+export const skills = ['React', 'Next.js', 'Fastify', 'PostgreSQL']
+export const experience = [{ company, role, dates, location, bullets: [] }, ...]
+
+css
+Copy code
+
+--- ENV & RUN INSTRUCTIONS (add to project root) ---
+`.env.local.example` must contain:
+GMAIL_USER=dummyemail@gmail.com
+GMAIL_PASS=dummyapppassword
+TO_EMAIL=faseeullah.1998@gmail.com
+
+sql
+Copy code
+
+Run locally / in Replit:
+1. `npm install`
+2. `npm run dev`
+3. Upload `RESUME.pdf` into `/public`
+4. Test contact form (it will attempt to send — with dummy creds it will likely fail; instruct how to set real creds or use SendGrid).
+
+--- DEPLOY (DEPLOY.md) ---
+- Connect repository to Vercel
+- Add env vars in Vercel dashboard: `GMAIL_USER`, `GMAIL_PASS`, `TO_EMAIL`
+- Build command: `npm run build`, output dir: default
+- After deploy, test `/contact` to confirm emails. Suggest using SendGrid/Sendinblue for production (less friction than Gmail app passwords).
+
+--- DELIVERY ---
+Produce the complete file tree with full source code for all files listed above. The code must be copy-paste ready and runnable in Replit. Keep comments explaining where to swap values (e.g., set real Gmail creds or change `TO_EMAIL`).
+
+--- EXTRA (optional but include if possible) ---
+- Dark/Light demo toggle in the navbar with icons (sun / moon) and accessible labels
+- A theme-switch animation
+- Slight parallax on hero background
+- A small "Deploy to Vercel" note with one-click instructions (if applicable)
+
+Now generate the full project code with all files included exactly as specified.
